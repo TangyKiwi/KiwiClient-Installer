@@ -203,7 +203,7 @@ public class Installer {
                 return;
             }
 
-            String loaderName = installAsMod ? "fabric-loader" : "kiwiClient-fabric-loader";
+            String loaderName = installAsMod ? "fabric-loader" : "kiwiclient-fabric-loader";
 
             try {
                 String loaderVersion = installAsMod ? Main.LOADER_META.getLatestVersion(false).getVersion() : "0.13.3";
