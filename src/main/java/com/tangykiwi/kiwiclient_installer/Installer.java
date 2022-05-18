@@ -91,7 +91,7 @@ public class Installer {
         JFrame frame = new JFrame("KiwiClient Installer");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
-        frame.setSize(350,350);
+        frame.setSize(400,350);
         frame.setLocationRelativeTo(null); // Centers the window
         frame.setIconImage(new ImageIcon(Objects.requireNonNull(Utils.class.getClassLoader().getResource("icon128.png"))).getImage());
 
