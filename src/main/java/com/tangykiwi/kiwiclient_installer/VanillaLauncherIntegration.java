@@ -44,7 +44,7 @@ public class VanillaLauncherIntegration {
         Files.createFile(dummyJar);
         URL profileUrl = new URL(Reference.getMetaServerEndpoint(String.format("v2/versions/loader/%s/%s/profile/json", gameVersion, loaderVersion)));
         Json profileJson = Json.read(profileUrl);
-        if (loaderName.equals("iris-fabric-loader")) {
+        if (loaderName.equals("kiwiclient-fabric-loader")) {
             editVersionJson(profileJson);
         }
         Utils.writeToFile(profileJsonPath, profileJson.toString());
@@ -53,15 +53,16 @@ public class VanillaLauncherIntegration {
     private static void editVersionJson(Json profileJson) {
         Json.Factory factory = Json.factory();
         Map<String, Json> json = profileJson.asJsonMap();
-        // Replace fabric-loader-etc with iris-fabric-loader-etc
-        json.compute("id", (ignored, existing) -> factory.string("iris-" + existing.asString()));
+        // Replace fabric-loader-etc with kiwiclient-fabric-loader-etc
+        json.compute("id", (ignored, existing) -> factory.string("kiwiclient-" + existing.asString()));
         // Replace loader maven url and name
         for (Json entry : json.get("libraries").asJsonList()) {
             final String id = "net.fabricmc:fabric-loader:";
             String name = entry.asJsonMap().get("name").asString();
             if (name.startsWith("net.fabricmc:fabric-loader:")) {
-                entry.asJsonMap().put("name", factory.string("net.coderbot:iris-loader:" + name.substring(id.length())));
-                entry.asJsonMap().put("url", factory.string("https://raw.githubusercontent.com/IrisShaders/Iris-Installer-Maven/master/"));
+                entry.asJsonMap().put("name", factory.string("com.tangykiwi:kiwiclient-loader:" + name.substring(id.length())));
+                entry.asJsonMap().put("url", factory.string("https://raw.githubusercontent.com/TangyKiwi/kiwiclient-loader/master/"));
+
             }
         }
     }
