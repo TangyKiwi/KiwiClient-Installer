@@ -1,4 +1,4 @@
-package net.hypercubemc.iris_installer;
+package com.tangykiwi.kiwiclient_installer;
 
 import mjson.Json;
 import net.fabricmc.installer.client.ProfileInstaller;
@@ -120,7 +120,7 @@ public class VanillaLauncherIntegration {
         }
 
         try {
-            InputStream is = Utils.class.getClassLoader().getResourceAsStream("iris_profile_icon.png");
+            InputStream is = Utils.class.getClassLoader().getResourceAsStream("icon128.png");
 
             String var4;
             try {
@@ -197,7 +197,7 @@ public class VanillaLauncherIntegration {
     }
 
     public enum Icon {
-        IRIS,
+        KIWICLIENT,
         FABRIC
     }
 }

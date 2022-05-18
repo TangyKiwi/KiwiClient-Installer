@@ -1,4 +1,4 @@
-package net.hypercubemc.iris_installer;
+package com.tangykiwi.kiwiclient_installer;
 
 import org.json.JSONException;
 import org.json.JSONObject;

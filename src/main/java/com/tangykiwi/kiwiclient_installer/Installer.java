@@ -1,11 +1,11 @@
-package net.hypercubemc.iris_installer;
+package com.tangykiwi.kiwiclient_installer;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
+import com.tangykiwi.kiwiclient_installer.layouts.VerticalLayout;
 import net.fabricmc.installer.Main;
 import net.fabricmc.installer.util.MetaHandler;
 import net.fabricmc.installer.util.Reference;
 import net.fabricmc.installer.util.Utils;
-import net.hypercubemc.iris_installer.layouts.VerticalLayout;
 import org.json.JSONException;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -25,7 +25,7 @@ public class Installer {
     InstallerMeta INSTALLER_META;
     List<InstallerMeta.Edition> EDITIONS;
     List<String> GAME_VERSIONS;
-    String BASE_URL = "https://raw.githubusercontent.com/IrisShaders/Iris-Installer-Files/master/";
+    String BASE_URL = "https://raw.githubusercontent.com/KiwiClient/KiwiClient-Installer/master/";
 
     String selectedEditionName;
     String selectedEditionDisplayName;
@@ -81,19 +81,19 @@ public class Installer {
         } catch (JSONException e) {
             System.out.println("Failed to fetch installer metadata from the server!");
             e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Installer metadata parsing failed, please contact the Iris support team via Discord! \nError: " + e, "Metadata Parsing Failed!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Installer metadata parsing failed! \nError: " + e, "Metadata Parsing Failed!", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         GAME_VERSIONS = INSTALLER_META.getGameVersions();
         EDITIONS = INSTALLER_META.getEditions();
 
-        JFrame frame = new JFrame("Iris Installer");
+        JFrame frame = new JFrame("KiwiClient Installer");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
         frame.setSize(350,350);
         frame.setLocationRelativeTo(null); // Centers the window
-        frame.setIconImage(new ImageIcon(Objects.requireNonNull(Utils.class.getClassLoader().getResource("iris_profile_icon.png"))).getImage());
+        frame.setIconImage(new ImageIcon(Objects.requireNonNull(Utils.class.getClassLoader().getResource("icon128.png"))).getImage());
 
         JPanel topPanel = new JPanel(new VerticalLayout());
 
@@ -175,8 +175,8 @@ public class Installer {
         installDirectoryPanel.add(installDirectoryPicker);
 
         installAsModCheckbox = new JCheckBox("Install as Fabric Mod", false);
-        installAsModCheckbox.setToolTipText("If this box is checked, Iris will be installed to your mods \n folder, " +
-                        "allowing you to use Iris with other Fabric mods!");
+        installAsModCheckbox.setToolTipText("If this box is checked, KiwiClient will be installed to your mods \n folder, " +
+                        "allowing you to use KiwiClient with other Fabric mods!");
         installAsModCheckbox.setHorizontalTextPosition(SwingConstants.LEFT);
         installAsModCheckbox.setAlignmentX(Component.CENTER_ALIGNMENT);
         installAsModCheckbox.addActionListener(e -> {
@@ -203,12 +203,11 @@ public class Installer {
                 return;
             }
 
-            String loaderName = installAsMod ? "fabric-loader" : "iris-fabric-loader";
+            String loaderName = installAsMod ? "fabric-loader" : "kiwiClient-fabric-loader";
 
             try {
-                URL loaderVersionUrl = new URL("https://raw.githubusercontent.com/IrisShaders/Iris-Installer-Maven/master/latest-loader");
-                String loaderVersion = installAsMod ? Main.LOADER_META.getLatestVersion(false).getVersion() : Utils.readTextFile(loaderVersionUrl);
-                boolean success = VanillaLauncherIntegration.installToLauncher(getVanillaGameDir(), getInstallDir(), installAsMod ? "Fabric Loader " + selectedVersion : selectedEditionDisplayName + " for " + selectedVersion, selectedVersion, loaderName, loaderVersion, installAsMod ? VanillaLauncherIntegration.Icon.FABRIC: VanillaLauncherIntegration.Icon.IRIS);
+                String loaderVersion = installAsMod ? Main.LOADER_META.getLatestVersion(false).getVersion() : "0.13.3";
+                boolean success = VanillaLauncherIntegration.installToLauncher(getVanillaGameDir(), getInstallDir(), installAsMod ? "Fabric Loader " + selectedVersion : selectedEditionDisplayName + " for " + selectedVersion, selectedVersion, loaderName, loaderVersion, installAsMod ? VanillaLauncherIntegration.Icon.FABRIC: VanillaLauncherIntegration.Icon.KIWICLIENT);
                 if (!success) {
                     System.out.println("Failed to install to launcher, canceling!");
                     return;
@@ -216,7 +215,7 @@ public class Installer {
             } catch (IOException e) {
                 System.out.println("Failed to install version and profile to vanilla launcher!");
                 e.printStackTrace();
-                JOptionPane.showMessageDialog(frame, "Failed to install to vanilla launcher, please contact the Iris support team via Discord! \nError: " + e, "Failed to install to launcher", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(frame, "Failed to install to vanilla launcher! \nError: " + e, "Failed to install to launcher", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
@@ -231,7 +230,7 @@ public class Installer {
 
             String zipName = selectedEditionName + "-" + selectedVersion + ".zip";
 
-            String downloadURL = "https://github.com/IrisShaders/Iris-Installer-Files/releases/latest/download/" + zipName;
+            String downloadURL = "https://github.com/TangyKiwi/KiwiClient/releases/download/5.11.27/kiwiclient-5.11.27.jar";
 
             File saveLocation = getStorageDirectory().resolve(zipName).toFile();
 
@@ -243,7 +242,7 @@ public class Installer {
                     try {
                         downloader.get();
                     } catch (InterruptedException | ExecutionException e) {
-                        System.out.println("Failed to download zip!");
+                        System.out.println("Failed to download jar!");
                         e.getCause().printStackTrace();
 
                         String msg = String.format("An error occurred while attempting to download the required files, please check your internet connection and try again! \nError: %s",
@@ -262,14 +261,14 @@ public class Installer {
                     File installDir = getInstallDir().toFile();
                     if (!installDir.exists() || !installDir.isDirectory()) installDir.mkdir();
 
-                    File modsFolder = installAsMod ? getInstallDir().resolve("mods").toFile() : getInstallDir().resolve("iris-reserved").resolve(selectedVersion).toFile();
+                    File modsFolder = installAsMod ? getInstallDir().resolve("mods").toFile() : getInstallDir().resolve("kiwiclient-mods").resolve(selectedVersion).toFile();
                     File[] modsFolderContents = modsFolder.listFiles();
 
                     if (modsFolderContents != null) {
                         boolean isEmpty = modsFolderContents.length == 0;
 
                         if (installAsMod && modsFolder.exists() && modsFolder.isDirectory() && !isEmpty) {
-                            int result = JOptionPane.showConfirmDialog(frame,"An existing mods folder was found in the selected game directory. Do you want to update/install iris?", "Mods Folder Detected",
+                            int result = JOptionPane.showConfirmDialog(frame,"An existing mods folder was found in the selected game directory. Do you want to update/install KiwiClient?", "Mods Folder Detected",
                                     JOptionPane.YES_NO_OPTION,
                                     JOptionPane.QUESTION_MESSAGE);
                             if (result != JOptionPane.YES_OPTION) {
@@ -284,7 +283,7 @@ public class Installer {
                             for (File mod : modsFolderContents) {
                                 if (mod.getName().toLowerCase().contains("optifine") || mod.getName().toLowerCase().contains("optifabric")) {
                                     if (!shownOptifineDialog) {
-                                        int result = JOptionPane.showOptionDialog(frame,"Optifine was found in your mods folder, but Optifine is incompatible with Iris. Do you want to remove it, or cancel the installation?", "Optifine Detected",
+                                        int result = JOptionPane.showOptionDialog(frame,"Optifine was found in your mods folder, but Optifine is incompatible with KiwiClient. Do you want to remove it, or cancel the installation?", "Optifine Detected",
                                                 JOptionPane.DEFAULT_OPTION,
                                                 JOptionPane.WARNING_MESSAGE, null, new String[]{"Yes", "Cancel"}, "Yes");
 
@@ -307,17 +306,17 @@ public class Installer {
                         }
 
                         if (!cancelled) {
-                            boolean failedToRemoveIrisOrSodium = false;
+                            boolean failedToRemoveKiwiClientOrSodium = false;
 
                             for (File mod : modsFolderContents) {
-                                if (mod.getName().toLowerCase().contains("iris") || mod.getName().toLowerCase().contains("sodium-fabric")) {
-                                    if (!mod.delete()) failedToRemoveIrisOrSodium = true;
+                                if (mod.getName().toLowerCase().contains("kiwiclient") || mod.getName().toLowerCase().contains("sodium-fabric")) {
+                                    if (!mod.delete()) failedToRemoveKiwiClientOrSodium = true;
                                 }
                             }
 
-                            if (failedToRemoveIrisOrSodium) {
-                                System.out.println("Failed to remove Iris or Sodium from mods folder to update them!");
-                                JOptionPane.showMessageDialog(frame, "Failed to remove iris and sodium from your mods folder to update them, please make sure your game is closed and try again!", "Failed to prepare mods for update", JOptionPane.ERROR_MESSAGE);
+                            if (failedToRemoveKiwiClientOrSodium) {
+                                System.out.println("Failed to remove KiwiClient from mods folder to update them!");
+                                JOptionPane.showMessageDialog(frame, "Failed to remove KiwiClient from your mods folder to update them, please make sure your game is closed and try again!", "Failed to prepare mods for update", JOptionPane.ERROR_MESSAGE);
                                 cancelled = true;
                             }
                         }
@@ -407,13 +406,13 @@ public class Installer {
             ZipEntry entry = zipIn.getNextEntry();
             // iterates over entries in the zip file
             if (!installAsMod) {
-                getInstallDir().resolve("iris-reserved/").toFile().mkdir();
+                getInstallDir().resolve("kiwiclient-mods/").toFile().mkdir();
             }
             while (entry != null) {
                 String entryName = entry.getName();
 
                 if (!installAsMod && entryName.startsWith("mods/")) {
-                    entryName = entryName.replace("mods/", "iris-reserved/" + selectedVersion + "/");
+                    entryName = entryName.replace("mods/", "kiwiclient-mods/" + selectedVersion + "/");
                 }
 
 
@@ -465,9 +464,9 @@ public class Installer {
     public String getStorageDirectoryName() {
         String os = System.getProperty("os.name").toLowerCase();
         if (os.contains("mac"))
-            return "iris-installer";
+            return "kiwiclient-installer";
         else
-            return ".iris-installer";
+            return ".kiwiclient-installer";
     }
 
     public Path getDefaultInstallDir() {

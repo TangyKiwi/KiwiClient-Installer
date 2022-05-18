@@ -1,4 +1,4 @@
-package net.hypercubemc.iris_installer.layouts;
+package com.tangykiwi.kiwiclient_installer.layouts;
 
 /**
  THIS PROGRAM IS PROVIDED "AS IS" WITHOUT ANY WARRANTIES (OR CONDITIONS),

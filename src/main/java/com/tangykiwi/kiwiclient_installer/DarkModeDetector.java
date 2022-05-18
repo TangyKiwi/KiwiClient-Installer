@@ -1,4 +1,4 @@
-package net.hypercubemc.iris_installer;
+package com.tangykiwi.kiwiclient_installer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
