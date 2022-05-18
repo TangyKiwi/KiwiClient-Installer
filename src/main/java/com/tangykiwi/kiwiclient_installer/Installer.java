@@ -25,7 +25,7 @@ public class Installer {
     InstallerMeta INSTALLER_META;
     List<InstallerMeta.Edition> EDITIONS;
     List<String> GAME_VERSIONS;
-    String BASE_URL = "https://raw.githubusercontent.com/KiwiClient/KiwiClient-Installer/master/";
+    String BASE_URL = "https://raw.githubusercontent.com/TangyKiwi/KiwiClient-Installer/master/";
 
     String selectedEditionName;
     String selectedEditionDisplayName;
