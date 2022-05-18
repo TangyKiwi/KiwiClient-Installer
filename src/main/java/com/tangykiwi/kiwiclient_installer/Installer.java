@@ -228,9 +228,9 @@ public class Installer {
             progressBar.setValue(0);
             setInteractionEnabled(false);
 
-            String zipName = selectedEditionName + "-" + selectedVersion + ".zip";
+            String zipName = selectedEditionName.toLowerCase() + ".zip";
 
-            String downloadURL = "https://github.com/TangyKiwi/KiwiClient/releases/download/5.11.27/kiwiclient-5.11.27.jar";
+            String downloadURL = "https://github.com/TangyKiwi/KiwiClient-Installer/raw/master/kiwiclient.zip";
 
             File saveLocation = getStorageDirectory().resolve(zipName).toFile();
 
@@ -242,7 +242,7 @@ public class Installer {
                     try {
                         downloader.get();
                     } catch (InterruptedException | ExecutionException e) {
-                        System.out.println("Failed to download jar!");
+                        System.out.println("Failed to download zip!");
                         e.getCause().printStackTrace();
 
                         String msg = String.format("An error occurred while attempting to download the required files, please check your internet connection and try again! \nError: %s",
