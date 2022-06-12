@@ -206,7 +206,7 @@ public class Installer {
             String loaderName = installAsMod ? "fabric-loader" : "kiwiclient-fabric-loader";
 
             try {
-                String loaderVersion = installAsMod ? Main.LOADER_META.getLatestVersion(false).getVersion() : "0.13.3";
+                String loaderVersion = installAsMod ? Main.LOADER_META.getLatestVersion(false).getVersion() : "0.14.6";
                 boolean success = VanillaLauncherIntegration.installToLauncher(getVanillaGameDir(), getInstallDir(), installAsMod ? "Fabric Loader " + selectedVersion : selectedEditionDisplayName + " for " + selectedVersion, selectedVersion, loaderName, loaderVersion, installAsMod ? VanillaLauncherIntegration.Icon.FABRIC: VanillaLauncherIntegration.Icon.KIWICLIENT);
                 if (!success) {
                     System.out.println("Failed to install to launcher, canceling!");
