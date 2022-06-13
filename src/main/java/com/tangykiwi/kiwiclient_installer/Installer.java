@@ -411,8 +411,10 @@ public class Installer {
             while (entry != null) {
                 String entryName = entry.getName();
 
-                if (!installAsMod && entryName.startsWith("mods/")) {
-                    entryName = entryName.replace("mods/", "kiwiclient-mods/" + selectedVersion + "/");
+                if (!installAsMod) {
+                    //entryName = "kiwiclient-mods/" + selectedVersion + "/";
+                    //entryName = entryName.replace("mods/", "kiwiclient-mods/" + selectedVersion + "/");
+                    entryName = "kiwiclient-mods/" + selectedVersion + "/" + entryName;
                 }
 
 
