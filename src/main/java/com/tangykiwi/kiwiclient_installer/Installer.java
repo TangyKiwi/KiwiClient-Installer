@@ -406,7 +406,7 @@ public class Installer {
             ZipEntry entry = zipIn.getNextEntry();
             // iterates over entries in the zip file
             if (!installAsMod) {
-                getInstallDir().resolve("kiwiclient-mods/").toFile().mkdir();
+                getInstallDir().resolve("kiwiclient-mods/" + selectedVersion + "/").toFile().mkdir();
             }
             while (entry != null) {
                 String entryName = entry.getName();
