@@ -406,32 +406,24 @@ public class Installer {
             ZipEntry entry = zipIn.getNextEntry();
             // iterates over entries in the zip file
             if (!installAsMod) {
+                getInstallDir().resolve("kiwiclient-mods/").toFile().mkdir();
                 getInstallDir().resolve("kiwiclient-mods/" + selectedVersion + "/").toFile().mkdir();
             }
             while (entry != null) {
                 String entryName = entry.getName();
 
                 if (!installAsMod) {
-                    //entryName = "kiwiclient-mods/" + selectedVersion + "/";
-                    //entryName = entryName.replace("mods/", "kiwiclient-mods/" + selectedVersion + "/");
                     entryName = "kiwiclient-mods/" + selectedVersion + "/" + entryName;
                 }
 
-
                 File filePath = getInstallDir().resolve(entryName).toFile();
-                if (!entry.isDirectory()) {
-                    // if the entry is a file, extracts it
-                    BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(filePath));
-                    byte[] bytesIn = new byte[BUFFER_SIZE];
-                    int read = 0;
-                    while ((read = zipIn.read(bytesIn)) != -1) {
-                        bos.write(bytesIn, 0, read);
-                    }
-                    bos.close();
-                } else {
-                    // if the entry is a directory, make the directory
-                    filePath.mkdir();
+                BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(filePath));
+                byte[] bytesIn = new byte[BUFFER_SIZE];
+                int read = 0;
+                while ((read = zipIn.read(bytesIn)) != -1) {
+                    bos.write(bytesIn, 0, read);
                 }
+                bos.close();
                 zipIn.closeEntry();
                 entry = zipIn.getNextEntry();
             }
