@@ -199,14 +199,19 @@ public class Installer {
         button = new JButton("Install");
         button.addActionListener(action -> {
             if (!EDITIONS.stream().filter(edition -> edition.name.equals(selectedEditionName)).findFirst().get().compatibleVersions.contains(selectedVersion)) {
-                JOptionPane.showMessageDialog(frame, "The selected edition is not compatible with the chosen game version.", "Incompatible Edition", JOptionPane.ERROR_MESSAGE);
+                String[] editions = EDITIONS.stream().filter(edition -> edition.compatibleVersions.contains(selectedVersion)).map(InstallerMeta.Edition::getDisplayName).toArray(String[]::new);
+                if (editions.length == 0 || editions == null) {
+                    JOptionPane.showMessageDialog(frame, "There are no editions compatible with the chosen game version.", "Incompatible Edition", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(frame, "The selected edition is not compatible with the chosen game version, however it may be compatible with one of the following: " + Arrays.toString(editions), "Incompatible Edition", JOptionPane.ERROR_MESSAGE);
+                }
                 return;
             }
 
             String loaderName = installAsMod ? "fabric-loader" : "kiwiclient-fabric-loader";
 
             try {
-                String loaderVersion = installAsMod ? Main.LOADER_META.getLatestVersion(false).getVersion() : "0.14.9";
+                String loaderVersion = installAsMod ? Main.LOADER_META.getLatestVersion(false).getVersion() : "0.14.10";
                 boolean success = VanillaLauncherIntegration.installToLauncher(getVanillaGameDir(), getInstallDir(), installAsMod ? "Fabric Loader " + selectedVersion : selectedEditionDisplayName + " for " + selectedVersion, selectedVersion, loaderName, loaderVersion, installAsMod ? VanillaLauncherIntegration.Icon.FABRIC: VanillaLauncherIntegration.Icon.KIWICLIENT);
                 if (!success) {
                     System.out.println("Failed to install to launcher, canceling!");

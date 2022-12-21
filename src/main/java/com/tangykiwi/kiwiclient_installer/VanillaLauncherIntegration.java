@@ -62,9 +62,10 @@ public class VanillaLauncherIntegration {
             if (name.startsWith("net.fabricmc:fabric-loader:")) {
                 entry.asJsonMap().put("name", factory.string("com.tangykiwi:kiwiclient-loader:" + name.substring(id.length())));
                 entry.asJsonMap().put("url", factory.string("https://raw.githubusercontent.com/TangyKiwi/kiwiclient-loader/master/"));
-
             }
         }
+
+        json.getOrDefault("arguments", Json.array()).asJsonMap().getOrDefault("jvm", Json.array()).asJsonList().add(factory.string("-Dkiwiclient.installer=true"));
     }
 
     private static void installProfile(Path mcDir, Path instanceDir, String profileName, String versionId, Icon icon, ProfileInstaller.LauncherType launcherType) throws IOException {
